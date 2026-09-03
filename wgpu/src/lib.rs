@@ -22,6 +22,9 @@
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(missing_docs)]
+// Send bounds over wgpu's deep type stack exceed rustc's default auto-trait
+// recursion depth (rust-lang/rust#159228, a future-incompat hard error).
+#![recursion_limit = "256"]
 pub mod layer;
 pub mod primitive;
 pub mod window;
@@ -435,6 +438,12 @@ impl Renderer {
         let mut quad_layer = 0;
         let mut mesh_layer = 0;
         let mut text_layer = 0;
+        let text_atlas = self
+            .engine
+            .text_pipeline
+            .atlas()
+            .read()
+            .expect("Read text atlas");
 
         #[cfg(any(feature = "svg", feature = "image"))]
         let mut image_layer = 0;
@@ -612,7 +621,7 @@ impl Renderer {
             if !layer.text.is_empty() {
                 let render_span = debug::render(debug::Primitive::Text);
                 text_layer += self.text.render(
-                    &self.engine.text_pipeline,
+                    &text_atlas,
                     &self.text_viewport,
                     text_layer,
                     &layer.text,

@@ -1119,18 +1119,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
-name = "cryoglyph"
-version = "0.1.0"
-source = "git+https://github.com/iced-rs/cryoglyph.git?rev=b4576782d7c22ecef973d32cf5b18881ad14fe89#b4576782d7c22ecef973d32cf5b18881ad14fe89"
-dependencies = [
- "cosmic-text",
- "etagere",
- "lru",
- "rustc-hash 2.1.3",
- "wgpu",
-]
-
-[[package]]
 name = "crypto-common"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1425,16 +1413,6 @@ name = "error-code"
 version = "3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b5343afd4a8365a643ac588dab4cf234a190c7f6c88c9f6dd6ffe00837661b7"
-
-[[package]]
-name = "etagere"
-version = "0.2.15"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc89bf99e5dc15954a60f707c1e09d7540e5cd9af85fa75caa0b510bc08c5342"
-dependencies = [
- "euclid",
- "svg_fmt",
-]
 
 [[package]]
 name = "euclid"
@@ -2105,6 +2083,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df"
 
 [[package]]
+name = "hotpath"
+version = "0.25.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "366c5db5a8e4643bdde121a1d6f35cfa035e7850b8b8ea94c6960a139d44e93a"
+dependencies = [
+ "hotpath-macros",
+]
+
+[[package]]
+name = "hotpath-macros"
+version = "0.25.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "846bde0d9600d98434e1aac376977d7718bfe3d2f5312a041b7c59a6a466c51a"
+
+[[package]]
 name = "http"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2453,7 +2446,6 @@ version = "0.15.0-dev"
 dependencies = [
  "bitflags 2.13.1",
  "bytemuck",
- "cryoglyph",
  "futures",
  "guillotiere",
  "iced_debug",
@@ -2462,6 +2454,7 @@ dependencies = [
  "lyon",
  "resvg",
  "rustc-hash 2.1.3",
+ "sluggrs",
  "thiserror 2.0.20",
  "wgpu",
 ]
@@ -3084,12 +3077,6 @@ version = "0.1.0"
 dependencies = [
  "iced",
 ]
-
-[[package]]
-name = "lru"
-version = "0.16.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f66e8d5d03f609abc3a39e6f08e4164ebf1447a732906d39eb9b99b7919ef39"
 
 [[package]]
 name = "lyon"
@@ -5292,6 +5279,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bdd58c3c93c3d278ca835519292445cb4b0d4dc59ccfdf7ceadaab3f8aeb4038"
 dependencies = [
  "version_check",
+]
+
+[[package]]
+name = "sluggrs"
+version = "0.1.0"
+dependencies = [
+ "bytemuck",
+ "cosmic-text",
+ "hotpath",
+ "log",
+ "rustc-hash 2.1.3",
+ "skrifa 0.40.0",
+ "wgpu",
 ]
 
 [[package]]
