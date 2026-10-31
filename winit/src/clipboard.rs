@@ -91,7 +91,10 @@ mod platform {
                         target_os = "emscripten"
                     )),
                 )))]
-                let get = clipboard.get();
+                let get = {
+                    let _ = clipboard_kind;
+                    clipboard.get()
+                };
 
                 let result = match kind {
                     Kind::Text => get.text().map(Content::Text),
@@ -160,7 +163,10 @@ mod platform {
                         target_os = "emscripten"
                     )),
                 )))]
-                let set = clipboard.set();
+                let set = {
+                    let _ = clipboard_kind;
+                    clipboard.set()
+                };
 
                 let result = match content {
                     Content::Text(text) => set.text(text),
