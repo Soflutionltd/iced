@@ -150,6 +150,10 @@ impl core::text::Paragraph for Paragraph {
         );
 
         buffer.set_wrap(text::to_wrap(text.wrapping));
+        buffer.set_ellipsize(text::to_ellipsize(
+            text.ellipsis,
+            text.bounds.height * hint_factor,
+        ));
 
         buffer.set_rich_text(
             text.content.iter().enumerate().map(|(i, span)| {
@@ -531,6 +535,42 @@ mod tests {
         };
 
         Paragraph::with_spans(text)
+    }
+
+    /// Rich text honours the ellipsis like plain text: the line stops at
+    /// its bounds, and no span is laid out past them.
+    #[test]
+    fn rich_text_ellipsizes_within_its_bounds() {
+        let content: [Span<'_, ()>; 3] = [
+            Span::new("Meubles de tourisme : pensez a verifier la date "),
+            Span::new("de"),
+            Span::new(" declaration en mairie avant la fin"),
+        ];
+        let width = 300.0;
+        let paragraph = Paragraph::with_spans(Text {
+            content: &content[..],
+            bounds: Size::new(width, f32::INFINITY),
+            size: Pixels(13.0),
+            line_height: LineHeight::Relative(1.3),
+            font: Font::default(),
+            align_x: Alignment::Default,
+            align_y: alignment::Vertical::Top,
+            shaping: Shaping::Advanced,
+            wrapping: Wrapping::None,
+            ellipsis: Ellipsis::End,
+            hint_factor: None,
+        });
+
+        let line = &paragraph.buffer().lines[0].layout_opt().unwrap()[0];
+        assert!(line.w <= width, "line is {} wide", line.w);
+        for index in 0..content.len() {
+            for bounds in paragraph.span_bounds(index) {
+                assert!(
+                    bounds.x + bounds.width <= width + 1e-2,
+                    "span {index}: {bounds:?}"
+                );
+            }
+        }
     }
 
     /// Bounds should cover the ink of the span, without stretching to the
